@@ -1,4 +1,4 @@
-7<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ml">
 <head>
 <meta charset="UTF-8">
@@ -4016,14 +4016,11 @@ a.onclick = function() { forceDownload(l.url); };
 }); 
   function forceDownload(url) {
   if (!url) return;
-  const cleanUrl = url.replace('/upload/fl_attachment/', '/upload/').replace('/upload/', '/upload/fl_attachment/');
-  const a = document.createElement('a');
-  a.href = cleanUrl;
-  a.setAttribute('download', 'Jashne_Funoon_' + Date.now() + '.jpg');
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-} 
+  let cleanUrl = url.replace('/upload/fl_attachment/', '/upload/');
+  cleanUrl = cleanUrl.replace('/upload/', '/upload/fl_attachment/');
+  window.location.href = cleanUrl;
+}
+
 </script>
 </body>
 </html>
