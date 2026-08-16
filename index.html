@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+7<!DOCTYPE html>
 <html lang="ml">
 <head>
 <meta charset="UTF-8">
@@ -4015,22 +4015,15 @@ a.onclick = function() { forceDownload(l.url); };
   if(isAdminLoggedIn) renderAdminLinksList(links);
 }); 
   function forceDownload(url) {
-  const filename = 'Jashne_Funoon_' + Date.now() + '.jpg';
-  fetch(url)
-    .then(response => response.blob())
-    .then(blob => {
-      const blobUrl = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = blobUrl;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(blobUrl);
-      a.remove();
-    })
-    .catch(() => window.open(url, '_blank'));
-}
-
+  if (!url) return;
+  const cleanUrl = url.replace('/upload/fl_attachment/', '/upload/').replace('/upload/', '/upload/fl_attachment/');
+  const a = document.createElement('a');
+  a.href = cleanUrl;
+  a.setAttribute('download', 'Jashne_Funoon_' + Date.now() + '.jpg');
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+} 
 </script>
 </body>
 </html>
