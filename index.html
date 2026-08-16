@@ -4014,7 +4014,24 @@ db.ref('settings/quick_links').on('value', snap => {
     linkContainer.innerHTML = '';
   }
   if(isAdminLoggedIn) renderAdminLinksList(links);
-});
+}); 
+  function forceDownload(url) {
+  const filename = 'Jashne_Funoon_' + Date.now() + '.jpg';
+  fetch(url)
+    .then(response => response.blob())
+    .then(blob => {
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(blobUrl);
+      a.remove();
+    })
+    .catch(() => window.open(url, '_blank'));
+}
+
 </script>
 </body>
 </html>
