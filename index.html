@@ -732,7 +732,7 @@ button:disabled {
     <button onclick="galleryPrev()" class="lightbox-nav absolute left-2 md:left-5 top-1/2 -translate-y-1/2 rounded-full bg-slate-900/80 text-white z-20"><i class="fa-solid fa-chevron-left"></i></button>
     <div class="max-w-[96vw] max-h-[92vh] flex flex-col items-center gap-3">
       <div class="flex items-center gap-2">
-                <button id="lightbox-download" onclick="forceDownload(document.getElementById('lightbox-image').src)" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-4 py-2 rounded-full text-xs shadow-lg"><i class="fa-solid fa-download mr-1"></i> Download</button>
+            <button id="lightbox-download" onclick="forceDownload(document.getElementById('lightbox-image').src)" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-4 py-2 rounded-full text-xs shadow-lg"><i class="fa-solid fa-download mr-1"></i> Download</button>
         <button id="lightbox-share" class="bg-green-600 hover:bg-green-500 text-white font-black px-4 py-2 rounded-full text-xs shadow-lg"><i class="fa-brands fa-whatsapp mr-1"></i> Share</button>
       </div>
       <img id="lightbox-image" class="lightbox-image rounded-xl shadow-2xl select-none" alt="Gallery photo" loading="lazy" decoding="async">
@@ -4016,10 +4016,31 @@ a.onclick = function() { forceDownload(l.url); };
 }); 
   function forceDownload(url) {
   if (!url) return;
-  let cleanUrl = url.replace('/upload/fl_attachment/', '/upload/');
-  cleanUrl = cleanUrl.replace('/upload/', '/upload/fl_attachment/');
-  window.location.href = cleanUrl;
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = url;
+  img.onload = function() {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    canvas.toBlob(function(blob) {
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = "Jashne_Funoon_" + Date.now() + ".jpg";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(blobUrl);
+    }, "image/jpeg");
+  };
+  img.onerror = function() {
+    window.open(url, "_blank");
+  };
 }
+
 
 </script>
 </body>
